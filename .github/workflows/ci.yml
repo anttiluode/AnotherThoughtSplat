@@ -25,9 +25,13 @@ jobs:
       - run: pytest
       - name: Gate 0 quick receipt
         run: python experiments/gate0_ring_world.py --quick --out results/gate0-ci --no-ply
+      - name: Gate 1 quick receipt
+        run: python experiments/gate1_local_spectroscopy.py --quick --out results/gate1-ci --no-ply
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: gate0-receipt-py${{ matrix.python-version }}
-          path: results/gate0-ci/gate0_receipt.json
+          name: gate-receipts-py${{ matrix.python-version }}
+          path: |
+            results/gate0-ci/gate0_receipt.json
+            results/gate1-ci/gate1_receipt.json
           if-no-files-found: warn

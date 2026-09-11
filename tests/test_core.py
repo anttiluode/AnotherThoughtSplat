@@ -3,6 +3,7 @@ from __future__ import annotations
 import numpy as np
 
 from experiments.gate0_ring_world import run_gate0
+from experiments.gate1_local_spectroscopy import run_gate1
 from thoughtsplat.core import (
     build_constraint_laplacian,
     build_material_stiffness,
@@ -50,3 +51,15 @@ def test_resonant_response_is_distributed() -> None:
 def test_gate0_positive_control_passes(tmp_path) -> None:
     receipt = run_gate0(tmp_path, n_per_object=60, windows=2, emit_ply=False)
     assert receipt["classification"] == "PASS_RING_THE_WORLD_POSITIVE_CONTROL"
+
+
+def test_gate1_local_selector_passes_without_label_access(tmp_path) -> None:
+    receipt = run_gate1(
+        tmp_path,
+        n_per_object=60,
+        windows=1,
+        frequency_count=80,
+        emit_ply=False,
+    )
+    assert receipt["classification"] == "PASS_LOCAL_PORT_FINDS_USEFUL_ADDRESS"
+    assert receipt["aggregate"]["relative_frequency_error_max"] <= 0.03
