@@ -5,6 +5,7 @@ import numpy as np
 from experiments.gate0_ring_world import run_gate0
 from experiments.gate1_local_spectroscopy import run_gate1
 from experiments.gate2_polysemantic_world import run_gate2
+from experiments.gate3_reversible_counterfactual import run_gate3
 from thoughtsplat.core import (
     build_constraint_laplacian,
     build_material_stiffness,
@@ -13,6 +14,7 @@ from thoughtsplat.core import (
     make_fragment_cue,
     resonant_response,
 )
+from thoughtsplat.counterfactual import array_sha256, make_counterfactual_overlay
 from thoughtsplat.polysemantic import (
     build_anisotropic_hypercube_laplacian,
     make_hypercube_world,
@@ -67,6 +69,22 @@ def test_polysemantic_world_uses_one_sparse_material_and_one_cue() -> None:
     assert np.all(world.bits[cue_idx, :3] == 0)
 
 
+def test_counterfactual_overlay_does_not_mutate_base() -> None:
+    base = np.arange(18, dtype=np.float64).reshape(6, 3)
+    base.setflags(write=False)
+    before = array_sha256(base)
+    field = np.linspace(0.0, 1.0, 6)
+    temporary, displacement = make_counterfactual_overlay(
+        base,
+        field,
+        direction=np.array([1.0, 2.0, -1.0]),
+        amplitude=0.2,
+    )
+    assert array_sha256(base) == before
+    assert not np.array_equal(temporary, base)
+    assert np.max(np.linalg.norm(displacement, axis=1)) > 0.0
+
+
 def test_gate0_positive_control_passes(tmp_path) -> None:
     receipt = run_gate0(tmp_path, n_per_object=60, windows=2, emit_ply=False)
     assert receipt["classification"] == "PASS_RING_THE_WORLD_POSITIVE_CONTROL"
@@ -90,3 +108,12 @@ def test_gate2_same_cue_exposes_multiple_relations(tmp_path) -> None:
     assert receipt["aggregate"]["addressed_phase_accuracy_min"] >= 0.98
     assert receipt["aggregate"]["wrong_relation_accuracy_max"] <= 0.55
     assert receipt["aggregate"]["magnitude_only_purity_mean"] <= 0.55
+
+
+def test_gate3_imagines_without_writing(tmp_path) -> None:
+    receipt = run_gate3(tmp_path, emit_ply=False)
+    assert receipt["classification"] == "PASS_IMAGINE_WITHOUT_WRITING"
+    assert receipt["aggregate"]["correct_detector_move_min"] >= 0.85
+    assert receipt["aggregate"]["wrong_address_detector_move_max"] <= 0.05
+    assert receipt["checks"]["base_xyz_hash_exactly_restored"]
+    assert receipt["checks"]["slow_material_hash_exactly_restored"]
