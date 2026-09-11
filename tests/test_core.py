@@ -4,6 +4,7 @@ import numpy as np
 
 from experiments.gate0_ring_world import run_gate0
 from experiments.gate1_local_spectroscopy import run_gate1
+from experiments.gate2_polysemantic_world import run_gate2
 from thoughtsplat.core import (
     build_constraint_laplacian,
     build_material_stiffness,
@@ -11,6 +12,11 @@ from thoughtsplat.core import (
     make_braided_world,
     make_fragment_cue,
     resonant_response,
+)
+from thoughtsplat.polysemantic import (
+    build_anisotropic_hypercube_laplacian,
+    make_hypercube_world,
+    make_shared_fragment_cue,
 )
 
 
@@ -48,6 +54,19 @@ def test_resonant_response_is_distributed() -> None:
     assert np.count_nonzero(np.abs(response[noncue_target]) > 1e-6) > 0
 
 
+def test_polysemantic_world_uses_one_sparse_material_and_one_cue() -> None:
+    world = make_hypercube_world(dimensions=6)
+    lap = build_anisotropic_hypercube_laplacian(
+        6, np.array([0.50, 0.83, 1.37, 2.11, 3.19, 4.73])
+    )
+    cue, cue_idx = make_shared_fragment_cue(world, relation_dimensions=(0, 1, 2), count=4)
+    assert world.xyz.shape == (64, 3)
+    assert lap.shape == (64, 64)
+    assert np.allclose(lap, lap.T)
+    assert np.count_nonzero(cue) == 4
+    assert np.all(world.bits[cue_idx, :3] == 0)
+
+
 def test_gate0_positive_control_passes(tmp_path) -> None:
     receipt = run_gate0(tmp_path, n_per_object=60, windows=2, emit_ply=False)
     assert receipt["classification"] == "PASS_RING_THE_WORLD_POSITIVE_CONTROL"
@@ -63,3 +82,11 @@ def test_gate1_local_selector_passes_without_label_access(tmp_path) -> None:
     )
     assert receipt["classification"] == "PASS_LOCAL_PORT_FINDS_USEFUL_ADDRESS"
     assert receipt["aggregate"]["relative_frequency_error_max"] <= 0.03
+
+
+def test_gate2_same_cue_exposes_multiple_relations(tmp_path) -> None:
+    receipt = run_gate2(tmp_path, emit_ply=False)
+    assert receipt["classification"] == "PASS_ONE_WORLD_MULTIPLE_RELATIONS"
+    assert receipt["aggregate"]["addressed_phase_accuracy_min"] >= 0.98
+    assert receipt["aggregate"]["wrong_relation_accuracy_max"] <= 0.55
+    assert receipt["aggregate"]["magnitude_only_purity_mean"] <= 0.55
