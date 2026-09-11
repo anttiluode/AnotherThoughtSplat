@@ -77,7 +77,7 @@ It selects
 
 That is local impedance spectroscopy: knock at the fragment, sweep the drive, and listen at the same fragment. The selector never receives object labels, completion purity, the global response norm, or Gate 0's oracle frequency. Hidden labels are used only afterward by the benchmark evaluator.
 
-Local preflight before CI:
+The merged CI receipt gives:
 
 ```text
 selected completion purity mean           0.9823
@@ -123,8 +123,8 @@ Several earlier repositories independently converged on pieces of the same machi
 
 The current sequence is:
 
-1. **RING THE WORLD** — supplied material + label-calibrated address; fragment-to-distributed-mode positive control. **Implemented.**
-2. **LOCAL SPECTROSCOPY** — choose the useful address from scalar return at the cue, without labels in the selector. **Implemented; under CI on this branch.**
+1. **RING THE WORLD** — supplied material + label-calibrated address; fragment-to-distributed-mode positive control. **Implemented and CI-green.**
+2. **LOCAL SPECTROSCOPY** — choose the useful address from scalar return at the cue, without labels in the selector. **Implemented and CI-green.**
 3. **One world, several relations** — make the same splats support different useful partitions (geometry, co-motion, object membership) at different addresses.
 4. **Counterfactual propagation** — inject a temporary change, let consequences travel in the internal world, render the predicted state, then remove the hypothetical exactly.
 5. **Teach -> erase -> ask** — let repeated local experience change persistent constraints, wipe fast activity, and test whether the same later cue follows a new route.
