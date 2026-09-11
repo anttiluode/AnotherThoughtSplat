@@ -13,7 +13,7 @@ dependencies = ["numpy>=1.26"]
 dev = ["pytest>=8"]
 
 [tool.setuptools.packages.find]
-include = ["thoughtsplat*"]
+include = ["thoughtsplat*", "experiments*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
