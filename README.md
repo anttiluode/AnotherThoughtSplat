@@ -142,6 +142,49 @@ Claim boundary:
 
 > The relations are engineered into an anisotropic hypercube material. Gate 2 does not discover object, motion, or surface semantics from raw geometry, and it does not establish an efficiency advantage over storing separate explicit relation graphs. It establishes a clean positive control for polysemantic addressed response in one shared material.
 
+## Gate 3 — imagine without writing
+
+Gate 3 turns the addressed relation into a **temporary geometry hypothesis** rather than another recall score.
+
+A matching resonant response is phase-aligned to the cue, normalized, half-wave read out, and used only as a temporary displacement overlay on the visible splat coordinates. The base geometry and the slow stiffness/material matrix are marked read-only and SHA-256 fingerprinted before and after the entire sequence.
+
+For each relation, the evaluator chooses a held-out detector splat that agrees with that relation but disagrees with the other two. The same four cue splats are used as before.
+
+The frozen CI receipt gives:
+
+```text
+matching-address detector move mean      0.99869 cue units
+matching-address detector move minimum   0.99504
+wrong-address detector move mean/max     0.00000 / 0.00000
+minimum correct-vs-wrong margin          0.99504
+magnitude-only wrong-address move mean   1.00153
+passive detector move mean               0.66327
+base XYZ hash before == after            true
+slow material hash before == after       true
+persistent-write attacker detected       true
+```
+
+The magnitude attacker is especially useful. If phase/sign is discarded, the wrong address moves the supposedly relation-specific detector by about a full cue unit. The selective imagined consequence therefore inherits the same phase-coded relation structure earned in Gate 2.
+
+The reversibility check is exact, not a decay threshold:
+
+```text
+thought / hypothetical
+        -> temporary distributed geometry overlay
+        -> inspect consequence elsewhere
+        -> discard overlay
+        -> base world byte-identical
+        -> slow operator material byte-identical
+```
+
+Supported narrow statement:
+
+> **An operator-addressed distributed consequence can be instantiated in an explicit temporary splat world without committing that hypothetical to either stored geometry or slow material.**
+
+Claim boundary:
+
+> This is an architectural separation test, not evidence of planning, causal understanding, or learned physics. The relations, displacement readout and held-out consequence probes are engineered. Its job is to establish the software/mechanistic invariant required before later learning gates: internal hypotheses need not become memories merely because they were simulated.
+
 Run the gates:
 
 ```bash
@@ -150,18 +193,21 @@ pytest
 python experiments/gate0_ring_world.py --out results/gate0
 python experiments/gate1_local_spectroscopy.py --out results/gate1
 python experiments/gate2_polysemantic_world.py --out results/gate2
+python experiments/gate3_reversible_counterfactual.py --out results/gate3
 ```
 
-Gate 0 writes diagnostic PLYs. Gate 1 additionally writes a CSV frequency scan for each object. Gate 2 writes one PLY per addressed relation: white is the shared cue, red/blue are opposite phase/sign sides of the selected relation.
+Gate 0 writes diagnostic PLYs. Gate 1 additionally writes a CSV frequency scan for each object. Gate 2 writes one PLY per addressed relation. Gate 3 writes the corresponding temporarily displaced imagined worlds; the originals remain untouched.
 
 ## Why this is here
 
 Several earlier repositories independently converged on pieces of the same machine:
 
 - **SplatField**: once a trained packet basis is placed in recurrence, its overlap/Gram geometry creates its own dynamical eigenmodes and forgetting hierarchy.
-- **SighImageSuper**: memory can live in lingering modes, travelling state, or changed material; the observer/query determines which distinctions are recoverable.
+- **SighImageSuper**: memory can live in lingering modes, travelling state, or changed material; the observer/query determines which distinctions are recoverable, and self-probing can itself become a write unless controlled.
 - **ObjektiYksi / SplatWorld3**: one persistent substrate can expose a family of different operators when queried through different addresses.
 - **Kompressori / CausalHorizon**: a large response operator can undergo compact, structured changes; local changes can interact or remain effectively independent.
+- **IttnasNoruen**: finite proposed changes should be approved by measured consequences rather than trusted from a local tangent alone.
+- **JelloBrain**: fast expectation, contextual relevance and slow consolidation should not be collapsed into one state; stable behavior should not keep teaching itself merely because it is stable.
 - **DendriteAsIteratedFeedbackOperator**: a distributed quasi-active operator can select a non-zero temporal mode from a mixture, and local structural changes can globally alter the resolvent.
 
 `AnotherThoughtSplat` tries to make those statements visible in one explicit world.
@@ -173,7 +219,7 @@ The current sequence is:
 1. **RING THE WORLD** — supplied material + label-calibrated address; fragment-to-distributed-mode positive control. **Implemented and CI-green.**
 2. **LOCAL SPECTROSCOPY** — choose the useful address from scalar return at the cue, without labels in the selector. **Implemented and CI-green.**
 3. **ONE WORLD, SEVERAL RELATIONS** — same splats and same cue expose different crossing relation partitions at different operator addresses; phase/magnitude and address-degeneracy attacks included. **Implemented and CI-green.**
-4. **Counterfactual propagation** — inject a temporary change, let consequences travel in the internal world, render the predicted state, then remove the hypothetical exactly.
+4. **IMAGINE WITHOUT WRITING** — operator-driven temporary geometry changes produce held-out consequences while base geometry and slow material remain byte-identical. **Implemented and CI-green.**
 5. **Teach -> erase -> ask** — let repeated local experience change persistent constraints, wipe fast activity, and test whether the same later cue follows a new route.
 6. **Collision radar** — predict when two persistent world edits cooperate or interfere from their induced operator changes.
 7. **Real Gaussian scene** — only after the mechanism survives synthetic controls, move to a trained 3DGS PLY and renderer-aware measurements.
