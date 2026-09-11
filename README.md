@@ -45,19 +45,67 @@ completion gain   = energy on uncued target splats / energy on the cue splats
 
 The gate is intentionally a **positive control**. Synthetic object labels are used to calibrate the three drive frequencies by projecting the operator onto the subspace that is constant within each known object. Therefore Gate 0 does **not** establish semantic discovery, learned addressing, or superiority over an arbitrary message-passing network.
 
-What it can establish is narrower and important:
+The merged CI receipt gives approximately:
+
+```text
+resonant completion purity mean       0.979
+resonant completion purity minimum    0.968
+passive completion purity mean        0.237
+wrong-frequency purity mean           0.007
+minimum correct-vs-wrong margin       0.951
+```
+
+Supported narrow statement:
 
 > A small fragment can excite a distributed object-like mode in one shared splat medium, and changing only the operator address can destroy that completion.
 
-Run it:
+## Gate 1 — find the address by listening only where you knocked
+
+Gate 0's largest privilege was the label-assisted resonance address. Gate 1 removes that privilege from the selector.
+
+For the same four-splat cue, the observer sweeps 80 candidate frequencies. At each one it receives exactly one scalar:
+
+```math
+p(\omega)=\operatorname{mean}_{i\in\text{cue}} |z_i(\omega)|^2.
+```
+
+It selects
+
+```math
+\omega^*=\arg\max_\omega p(\omega).
+```
+
+That is local impedance spectroscopy: knock at the fragment, sweep the drive, and listen at the same fragment. The selector never receives object labels, completion purity, the global response norm, or Gate 0's oracle frequency. Hidden labels are used only afterward by the benchmark evaluator.
+
+Local preflight before CI:
+
+```text
+selected completion purity mean           0.9823
+selected completion purity minimum        0.9743
+selected completion gain minimum          4.8337x
+mean oracle completion purity             0.9786
+maximum selected-frequency error          1.73%
+uniform-random-frequency expected purity  0.4381
+selected - random expected                 0.5441
+passive completion purity mean            0.2370
+```
+
+So the same local cue that needs hidden labels to define the benchmark does **not** need those labels to find a useful resonance address in this constructed material.
+
+Claim boundary:
+
+> The material itself still contains object-aligned resonance. Gate 1 discovers the useful *query address* from bounded local measurements; it does not learn the material or discover object semantics from raw scene data.
+
+Run the gates:
 
 ```bash
 python -m pip install -e .[dev]
 pytest
 python experiments/gate0_ring_world.py --out results/gate0
+python experiments/gate1_local_spectroscopy.py --out results/gate1
 ```
 
-The experiment writes `results/gate0/gate0_receipt.json` and diagnostic PLYs. White splats are the explicit cue; color shows response magnitude.
+Gate 0 writes diagnostic PLYs. Gate 1 additionally writes a CSV frequency scan for each object, with the selector's local cue power and the hidden evaluator's completion purity kept as separate columns.
 
 ## Why this is here
 
@@ -73,13 +121,14 @@ Several earlier repositories independently converged on pieces of the same machi
 
 ## Ladder
 
-Do not skip Gate 0's controls. If it passes, the intended sequence is:
+The current sequence is:
 
-1. **Address without labels** — discover/select a useful drive address from bounded outcome measurements instead of using object labels.
-2. **One world, several relations** — make the same splats support different useful partitions (geometry, co-motion, object membership) at different addresses.
-3. **Counterfactual propagation** — inject a temporary change, let consequences travel in the internal world, render the predicted state, then remove the hypothetical exactly.
-4. **Teach -> erase -> ask** — let repeated local experience change persistent constraints, wipe fast activity, and test whether the same later cue follows a new route.
-5. **Collision radar** — predict when two persistent world edits cooperate or interfere from their induced operator changes.
-6. **Real Gaussian scene** — only after the mechanism survives synthetic controls, move to a trained 3DGS PLY and renderer-aware measurements.
+1. **RING THE WORLD** — supplied material + label-calibrated address; fragment-to-distributed-mode positive control. **Implemented.**
+2. **LOCAL SPECTROSCOPY** — choose the useful address from scalar return at the cue, without labels in the selector. **Implemented; under CI on this branch.**
+3. **One world, several relations** — make the same splats support different useful partitions (geometry, co-motion, object membership) at different addresses.
+4. **Counterfactual propagation** — inject a temporary change, let consequences travel in the internal world, render the predicted state, then remove the hypothetical exactly.
+5. **Teach -> erase -> ask** — let repeated local experience change persistent constraints, wipe fast activity, and test whether the same later cue follows a new route.
+6. **Collision radar** — predict when two persistent world edits cooperate or interfere from their induced operator changes.
+7. **Real Gaussian scene** — only after the mechanism survives synthetic controls, move to a trained 3DGS PLY and renderer-aware measurements.
 
 The project succeeds if the operator earns a job that ordinary splat storage does not already solve. It also succeeds if the controls kill the idea quickly.
